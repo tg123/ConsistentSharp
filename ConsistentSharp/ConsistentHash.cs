@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.HashFunction.CRCStandards;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading;
 namespace ConsistentSharp
 {
     /// from https://github.com/stathat/consistent/blob/master/consistent.go
-    public class Consistent
+    public class ConsistentHash : IDisposable
     {
         private readonly Dictionary<uint, string> _circle = new Dictionary<uint, string>();
         private readonly Dictionary<string, bool> _members = new Dictionary<string, bool>();
@@ -94,7 +94,7 @@ namespace ConsistentSharp
             _rwlock.EnterWriteLock();
             try
             {
-                foreach (var k in _members.Keys)
+                foreach (var k in _members.Keys.ToArray())
                 {
                     var found = elts.Any(v => k == v);
 
@@ -169,7 +169,7 @@ namespace ConsistentSharp
 
             while (s < e)
             {
-                var m = s + (e - s)/2;
+                var m = s + (e - s) / 2;
 
                 if (!f(m))
                 {
@@ -203,9 +203,10 @@ namespace ConsistentSharp
             var v = hash.ComputeHash(Encoding.UTF8.GetBytes(eltKey));
             return BitConverter.ToUInt32(v, 0);
         }
-    }
 
-    public class EmptyCircleException : Exception
-    {
+        public void Dispose()
+        {
+            _rwlock.Dispose();
+        }
     }
 }

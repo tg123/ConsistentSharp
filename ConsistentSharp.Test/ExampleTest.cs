@@ -1,8 +1,7 @@
-﻿using System;
-using ConsistentSharp;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ConsistentSharpTest
+namespace ConsistentSharp.Test
 {
     // TODO
     // COPY FULL TESTCASES FROM GO
@@ -13,13 +12,13 @@ namespace ConsistentSharpTest
         [TestMethod]
         public void TestAdd()
         {
-            var c = new Consistent();
+            var c = new ConsistentHash();
 
             c.Add("cacheA");
             c.Add("cacheB");
             c.Add("cacheC");
 
-            var users = new[] {"user_mcnulty", "user_bunk", "user_omar", "user_bunny", "user_stringer"};
+            var users = new[] { "user_mcnulty", "user_bunk", "user_omar", "user_bunny", "user_stringer" };
 
             Dump(users, c);
 
@@ -36,7 +35,7 @@ namespace ConsistentSharpTest
             Dump(users, c);
         }
 
-        private static void Dump(string[] users, Consistent c)
+        private static void Dump(string[] users, ConsistentHash c)
         {
             foreach (var user in users)
             {
@@ -46,4 +45,5 @@ namespace ConsistentSharpTest
             Console.WriteLine();
         }
     }
+
 }
