@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFrameworks>netstandard1.0;net45;net40</TargetFrameworks>
     <Authors>Boshi Lian</Authors>
     <Company />
     <Product />
@@ -11,9 +11,5 @@
     <PackageProjectUrl>https://github.com/tg123/ConsistentSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tg123/ConsistentSharp</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0-ci-00012" />
-  </ItemGroup>
 
 </Project>

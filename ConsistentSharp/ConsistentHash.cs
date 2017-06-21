@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.HashFunction.CRCStandards;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -35,6 +34,11 @@ namespace ConsistentSharp
                     _rwlock.ExitReadLock();
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _rwlock.Dispose();
         }
 
 
@@ -198,15 +202,7 @@ namespace ConsistentSharp
 
         protected virtual uint HashKey(string eltKey)
         {
-            //var hash = new MurmurHash3();
-            var hash = new CRC32();
-            var v = hash.ComputeHash(Encoding.UTF8.GetBytes(eltKey));
-            return BitConverter.ToUInt32(v, 0);
-        }
-
-        public void Dispose()
-        {
-            _rwlock.Dispose();
+            return Crc32.Hash(Encoding.UTF8.GetBytes(eltKey));
         }
     }
 }
