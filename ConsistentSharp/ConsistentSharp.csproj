@@ -5,11 +5,13 @@
     <Authors>Boshi Lian</Authors>
     <Company />
     <Product />
-    <Description />
+    <Description>Consistent hash for dotnet core. port from go version https://github.com/stathat/consistent</Description>
     <PackageLicenseUrl>https://github.com/tg123/ConsistentSharp/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/tg123/ConsistentSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tg123/ConsistentSharp</RepositoryUrl>
+    <PackageTags>Consistent hash</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
