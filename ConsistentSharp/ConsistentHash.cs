@@ -7,7 +7,7 @@ using System.Threading;
 namespace ConsistentSharp
 {
     /// from https://github.com/stathat/consistent/blob/master/consistent.go
-    public class ConsistentHash : IDisposable
+    public partial class ConsistentHash : IDisposable
     {
         private readonly Dictionary<uint, string> _circle = new Dictionary<uint, string>();
         private readonly Dictionary<string, bool> _members = new Dictionary<string, bool>();
@@ -44,6 +44,11 @@ namespace ConsistentSharp
 
         public void Add(string elt)
         {
+            if (elt == null)
+            {
+                throw new ArgumentNullException(nameof(elt));
+            }
+
             _rwlock.EnterWriteLock();
 
             try
@@ -70,6 +75,11 @@ namespace ConsistentSharp
 
         public void Remove(string elt)
         {
+            if (elt == null)
+            {
+                throw new ArgumentNullException(nameof(elt));
+            }
+
             _rwlock.EnterWriteLock();
             try
             {
@@ -93,7 +103,17 @@ namespace ConsistentSharp
             _count--;
         }
 
-        public void Set(string[] elts)
+        public void Set(IEnumerable<string> elts)
+        {
+            if (elts == null)
+            {
+                throw new ArgumentNullException(nameof(elts));
+            }
+
+            _Set(elts.ToArray());
+        }
+
+        private void _Set(string[] elts)
         {
             _rwlock.EnterWriteLock();
             try
@@ -127,6 +147,11 @@ namespace ConsistentSharp
 
         public string Get(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             _rwlock.EnterReadLock();
 
             try
@@ -148,9 +173,133 @@ namespace ConsistentSharp
             }
         }
 
-        // not copied
-        // GetTwo
-        // GetN
+#if NETSTANDARD1_0
+        public (string, string) GetTwo(string name)
+#else
+        public Tuple<string, string> GetTwo(string name)
+#endif
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            _rwlock.EnterReadLock();
+
+            try
+            {
+                if (_count == 0)
+                {
+                    throw new EmptyCircleException();
+                }
+
+                var key = HashKey(name);
+
+                var i = Search(key);
+
+                var a = _circle[_sortedHashes[i]];
+
+                if (_count == 1)
+                {
+#if NETSTANDARD1_0
+                    return (a, default(string));
+#else
+                    return new Tuple<string, string>(a, default(string));
+#endif
+                }
+
+                var start = i;
+
+                var b = default(string);
+
+                for (i = start + 1; i != start; i++)
+                {
+                    if (i >= _sortedHashes.Length)
+                    {
+                        i = 0;
+                    }
+
+                    b = _circle[_sortedHashes[i]];
+
+                    if (b != a)
+                    {
+                        break;
+                    }
+                }
+
+#if NETSTANDARD1_0
+                return (a, b);
+#else
+                return new Tuple<string, string>(a, b);
+#endif
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+        }
+
+        public IEnumerable<string> GetN(string name, int n)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (_count < n)
+            {
+                n = (int) _count;
+            }
+
+            _rwlock.EnterReadLock();
+
+            try
+            {
+                if (_count == 0)
+                {
+                    throw new EmptyCircleException();
+                }
+
+
+                var key = HashKey(name);
+                var i = Search(key);
+                var start = i;
+                var res = new List<string>();
+                var elem = _circle[_sortedHashes[i]];
+
+                res.Add(elem);
+                if (res.Count == n)
+                {
+                    return res;
+                }
+
+                for (i = start + 1; i != start; i++)
+                {
+                    if (i >= _sortedHashes.Length)
+                    {
+                        i = 0;
+                    }
+
+                    elem = _circle[_sortedHashes[i]];
+
+                    if (!res.Contains(elem))
+                    {
+                        res.Add(elem);
+                    }
+
+                    if (res.Count == n)
+                    {
+                        break;
+                    }
+                }
+
+                return res;
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+        }
 
         private int Search(uint key)
         {

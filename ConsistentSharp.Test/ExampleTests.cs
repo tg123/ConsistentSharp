@@ -3,10 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ConsistentSharp.Test
 {
-    // TODO
-    // COPY FULL TESTCASES FROM GO
     [TestClass]
-    public class ExampleTest
+    public class ExampleTests
     {
         // https://github.com/stathat/consistent/blob/master/example_test.go
         [TestMethod]
