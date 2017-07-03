@@ -12,25 +12,25 @@ Install-Package ConsistentSharp
 ## Usage
 
 ```
-            var c = new ConsistentHash();
+var c = new ConsistentHash();
 
-            c.Add("cacheA");
-            c.Add("cacheB");
-            c.Add("cacheC");
+c.Add("cacheA");
+c.Add("cacheB");
+c.Add("cacheC");
 
-            var users = new[] {"user_mcnulty", "user_bunk", "user_omar", "user_bunny", "user_stringer"};
+var users = new[] {"user_mcnulty", "user_bunk", "user_omar", "user_bunny", "user_stringer"};
 
-            Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
+Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
 
-            c.Add("cacheD");
-            c.Add("cacheE");
-            Console.WriteLine(c.Get("user_mcnulty"));  // cacheE
+c.Add("cacheD");
+c.Add("cacheE");
+Console.WriteLine(c.Get("user_mcnulty"));  // cacheE
 
 
-            c.Remove("cacheD");
-            c.Remove("cacheE");
-            Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
+c.Remove("cacheD");
+c.Remove("cacheE");
+Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
 
-            c.Remove("cacheC");
-            Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
+c.Remove("cacheC");
+Console.WriteLine(c.Get("user_mcnulty"));  // cacheA
 ```
