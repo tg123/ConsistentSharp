@@ -2,14 +2,6 @@
 
 namespace ConsistentSharp
 {
-    /**
-     * This code is borrowed from https://github.com/damieng/DamienGKit/blob/master/CSharp/DamienG.Library/Security/Cryptography/Crc32.cs
-     * 
-     * Copyright (c) Damien Guard.  All rights reserved.
-     * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-     * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-     * Originally published at http://damieng.com/blog/2006/08/08/calculating_crc32_in_c_and_net
-     */
     internal static class Crc32
     {
         private const uint DefaultPolynomial = 0xEDB88320;
