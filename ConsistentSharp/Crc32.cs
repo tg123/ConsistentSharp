@@ -2,6 +2,7 @@
 
 namespace ConsistentSharp
 {
+    // This code is borrowed from https://github.com/damieng/DamienGKit/blob/master/CSharp/DamienG.Library/Security/Cryptography/Crc32.cs 
     internal static class Crc32
     {
         private const uint DefaultPolynomial = 0xEDB88320;
