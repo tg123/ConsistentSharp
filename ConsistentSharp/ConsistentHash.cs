@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace ConsistentSharp
@@ -12,6 +11,7 @@ namespace ConsistentSharp
         private readonly Dictionary<uint, string> _circle = new Dictionary<uint, string>();
         private readonly Dictionary<string, bool> _members = new Dictionary<string, bool>();
         private readonly ReaderWriterLockSlim _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        private readonly IHashAlgorithm _hashAlgorithm;
 
         private long _count;
 
@@ -19,6 +19,10 @@ namespace ConsistentSharp
 
         public int NumberOfReplicas { get; set; } = 20;
 
+        public ConsistentHash(IHashAlgorithm hashAlgorithm = null) {
+            _hashAlgorithm = hashAlgorithm ?? new Crc32HashAlgorithm();
+        }
+        
         public IEnumerable<string> Members
         {
             get
@@ -65,7 +69,7 @@ namespace ConsistentSharp
         {
             for (var i = 0; i < NumberOfReplicas; i++)
             {
-                _circle[HashKey(EltKey(elt, i))] = elt;
+                _circle[_hashAlgorithm.HashKey(EltKey(elt, i))] = elt;
             }
 
             _members[elt] = true;
@@ -95,7 +99,7 @@ namespace ConsistentSharp
         {
             for (var i = 0; i < NumberOfReplicas; i++)
             {
-                _circle.Remove(HashKey(EltKey(elt, i)));
+                _circle.Remove(_hashAlgorithm.HashKey(EltKey(elt, i)));
             }
 
             _members.Remove(elt);
@@ -161,7 +165,7 @@ namespace ConsistentSharp
                     throw new EmptyCircleException();
                 }
 
-                var key = HashKey(name);
+                var key = _hashAlgorithm.HashKey(name);
 
                 var i = Search(key);
 
@@ -193,7 +197,7 @@ namespace ConsistentSharp
                     throw new EmptyCircleException();
                 }
 
-                var key = HashKey(name);
+                var key = _hashAlgorithm.HashKey(name);
 
                 var i = Search(key);
 
@@ -261,7 +265,7 @@ namespace ConsistentSharp
                 }
 
 
-                var key = HashKey(name);
+                var key = _hashAlgorithm.HashKey(name);
                 var i = Search(key);
                 var start = i;
                 var res = new List<string>();
@@ -347,11 +351,6 @@ namespace ConsistentSharp
         private static string EltKey(string elt, int idx)
         {
             return $"{idx}{elt}";
-        }
-
-        protected virtual uint HashKey(string eltKey)
-        {
-            return Crc32.Hash(Encoding.UTF8.GetBytes(eltKey));
         }
     }
 }
