@@ -61,7 +61,7 @@ namespace ConsistentSharp
             }
             finally
             {
-                _rwlock.EnterWriteLock();
+                _rwlock.ExitWriteLock();
             }
         }
 
@@ -91,7 +91,7 @@ namespace ConsistentSharp
             }
             finally
             {
-                _rwlock.EnterWriteLock();
+                _rwlock.ExitWriteLock();
             }
         }
 
