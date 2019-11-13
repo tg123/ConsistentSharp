@@ -6,12 +6,12 @@
     <Company />
     <Product />
     <Description>Consistent hash for dotnet core. port from go version https://github.com/stathat/consistent</Description>
-    <PackageLicenseUrl>https://github.com/tg123/ConsistentSharp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/tg123/ConsistentSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tg123/ConsistentSharp</RepositoryUrl>
     <PackageTags>Consistent hash</PackageTags>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
