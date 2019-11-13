@@ -4,7 +4,7 @@ Port https://github.com/stathat/consistent in to C#
 ## Install
 
 [![NuGet version](https://badge.fury.io/nu/ConsistentSharp.svg)](https://badge.fury.io/nu/ConsistentSharp)
-[![Build status](https://farmer1992.visualstudio.com/opensources/_apis/build/status/ConsistentSharp)](https://farmer1992.visualstudio.com/opensources/_build/latest?definitionId=6)
+![](https://github.com/tg123/ConsistentSharp/workflows/.NET%20Core/badge.svg)
 
 ```
 Install-Package ConsistentSharp 
