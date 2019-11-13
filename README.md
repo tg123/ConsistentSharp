@@ -1,5 +1,5 @@
 # ConsistentSharp
-Port https://github.com/stathat/consistent in to C#
+Port https://github.com/stathat/consistent into C#
 
 ## Install
 
