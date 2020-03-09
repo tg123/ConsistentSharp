@@ -23,6 +23,6 @@ jobs:
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura"
     - uses: 5monkeys/cobertura-action@master
       with:
-        path: ConsistentSharp/ConsistentSharp.Test/coverage.cobertura.xml
+        path: ConsistentSharp.Test/coverage.cobertura.xml
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         minimum_coverage: 75
